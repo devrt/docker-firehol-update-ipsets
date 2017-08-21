@@ -1,0 +1,7 @@
+#!/bin/bash
+
+while :
+do
+    update-ipsets -s
+    sleep $((($RANDOM % 15 + 60) * 30)) # sleeps for about 30 minutes or more (add random variable to avoid DDoS to blacklist provider)
+done
