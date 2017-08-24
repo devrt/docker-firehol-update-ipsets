@@ -3,5 +3,5 @@
 while :
 do
     update-ipsets -s
-    sleep $((($RANDOM % 15 + 60) * 30)) # sleeps for about 30 minutes or more (add random variable to avoid DDoS to blacklist provider)
+    sleep $((($RANDOM % 20 + 50) * 10)) # sleeps for about 10 minutes (add random variable to avoid DDoS to iplist provider)
 done
