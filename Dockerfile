@@ -29,6 +29,7 @@ RUN apk add --no-cache --virtual .firehol_builddep autoconf automake make && \
     rm -rf /tmp/firehol-$FIREHOL_VERSION && \
     apk del .firehol_builddep
 
+ADD enable-recur /bin/enable-recur
 ADD update-ipsets-periodic /bin/update-ipsets-periodic
 
 ENTRYPOINT ["/sbin/tini", "--"]

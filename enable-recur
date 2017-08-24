@@ -1,0 +1,19 @@
+#!/bin/bash
+
+update-ipsets enable $1 2>&1
+
+has_dep=true
+while $has_dep;
+do
+    has_dep=false
+    out=`update-ipsets -s 2>&1 | grep "will be generated without"`
+    while read i;
+    do
+        f=`echo $i | awk -F "[']" '{ print $2 }'`
+        if [[ ! -z $f ]];
+        then
+            has_dep=true
+            update-ipsets enable $f 2>&1
+        fi
+    done <<< "$out"
+done
