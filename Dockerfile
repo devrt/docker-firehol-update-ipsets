@@ -33,6 +33,9 @@ RUN apk add --no-cache --virtual .firehol_builddep autoconf automake make && \
 ADD enable-recur /bin/enable-recur
 ADD update-ipsets-periodic /bin/update-ipsets-periodic
 
+RUN update-ipsets -s
+VOLUME /etc/firehol/ipsets
+
 ENTRYPOINT ["/sbin/tini", "--"]
 
 CMD ["/bin/update-ipsets-periodic"]
