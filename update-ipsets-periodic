@@ -1,7 +1,21 @@
 #!/bin/bash
 
+# better to update the update-ipsets script to the newest version (IP list providers are updated daily basis)
+curl -L https://raw.githubusercontent.com/firehol/firehol/master/sbin/update-ipsets -o /sbin/update-ipsets && chmod a+x /sbin/update-ipsets
+
+# restore the latest ipsets
+if [ -e /etc/firehol/ipsets/ipset-names.latest ];
+then
+    ipset restore < /etc/firehol/ipsets/ipset-names.latest
+fi
+for i in `ipset list -n`;
+do
+    ipset-apply $i
+done
+
 while :
 do
     update-ipsets -s
+    ipset save | grep create > /etc/firehol/ipsets/ipset-names.latest # save the latest ipsets (names only)
     sleep $((($RANDOM % 20 + 50) * 10)) # sleeps for about 10 minutes (add random variable to avoid DDoS to iplist provider)
 done
