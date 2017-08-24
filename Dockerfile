@@ -25,6 +25,7 @@ RUN apk add --no-cache --virtual .firehol_builddep autoconf automake make && \
     ./configure --prefix= --disable-doc --disable-man && \
     make && \
     make install && \
+    cp contrib/ipset-apply.sh /bin/ipset-apply && \
     cd && \
     rm -rf /tmp/firehol-$FIREHOL_VERSION && \
     apk del .firehol_builddep
