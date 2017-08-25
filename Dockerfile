@@ -19,7 +19,7 @@ RUN apk add --no-cache --virtual .iprange_builddep autoconf automake make gcc mu
 ENV FIREHOL_VERSION 3.1.3
 
 RUN apk add --no-cache --virtual .firehol_builddep autoconf automake make && \
-    curl -L https://github.com/firehol/firehol/releases/download/v$FIREHOL_VERSION/firehol-$FIREHOL_VERSION.tar.gz /tmp/firehol.tar.gz | tar zvx -C /tmp && \
+    curl -L https://github.com/firehol/firehol/releases/download/v$FIREHOL_VERSION/firehol-$FIREHOL_VERSION.tar.gz | tar zvx -C /tmp && \
     cd /tmp/firehol-$FIREHOL_VERSION && \
     ./autogen.sh && \
     ./configure --prefix= --disable-doc --disable-man && \
