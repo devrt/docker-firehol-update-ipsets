@@ -1,0 +1,42 @@
+#!/bin/bash
+
+wait () {
+    while [ "$(lsof -w -- /var/run/update-ipsets.lock)" ];
+    do
+        echo "waiting for update-ipsets to finish..."
+        sleep 1
+    done
+}
+
+wait
+update-ipsets enable $1 2>&1
+
+has_dep=true
+while $has_dep;
+do
+    has_dep=false
+    wait
+    out=`update-ipsets -s 2>&1 | grep "will be generated without"`
+    while read i;
+    do
+        f=`echo $i | awk -F "[']" '{ print $2 }'`
+        if [[ ! -z $f ]];
+        then
+            has_dep=true
+            wait
+            update-ipsets enable $f 2>&1
+            sf=`echo $f | sed -E 's/_[0-9]+d//g'`
+            if [ $f != $sf ];
+            then
+                wait
+                update-ipsets enable $sf 2>&1
+            fi
+        fi
+    done <<< "$out"
+done
+
+ipset-apply $1
+ipset save | grep create > /etc/firehol/ipsets/ipset-names.latest # save the latest ipsets (names only)
+
+iptables -I INPUT -m set --match-set $1 src -j DROP
+iptables -I DOCKER-USER -m set --match-set $1 src -j DROP

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+iptables -D INPUT -m set --match-set $1 src -j DROP
+iptables -D DOCKER-USER -m set --match-set $1 src -j DROP
+
+ipset destroy $1
+ipset save | grep create > /etc/firehol/ipsets/ipset-names.latest # save the latest ipsets (names only)

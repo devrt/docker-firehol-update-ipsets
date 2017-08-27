@@ -11,11 +11,12 @@ fi
 for i in `ipset list -n`;
 do
     ipset-apply $i
+    iptables -I INPUT -m set --match-set $i src -j DROP
+    iptables -I DOCKER-USER -m set --match-set $i src -j DROP
 done
 
 while :
 do
     update-ipsets -s
-    ipset save | grep create > /etc/firehol/ipsets/ipset-names.latest # save the latest ipsets (names only)
     sleep $((($RANDOM % 20 + 50) * 10)) # sleeps for about 10 minutes (add random variable to avoid DDoS to iplist provider)
 done

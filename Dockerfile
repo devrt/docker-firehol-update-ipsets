@@ -2,7 +2,7 @@ FROM alpine
 
 MAINTAINER Yosuke Matsusaka <yosuke.matsusaka@gmail.com>
 
-RUN apk add --no-cache tini bash ipset iproute2 curl unzip grep gawk
+RUN apk add --no-cache tini bash ipset iproute2 curl unzip grep gawk lsof
 
 ENV IPRANGE_VERSION 1.0.3
 
@@ -30,7 +30,8 @@ RUN apk add --no-cache --virtual .firehol_builddep autoconf automake make && \
     rm -rf /tmp/firehol-$FIREHOL_VERSION && \
     apk del .firehol_builddep
 
-ADD enable-recur /bin/enable-recur
+ADD enable /bin/enable
+ADD disable /bin/disable
 ADD update-ipsets-periodic /bin/update-ipsets-periodic
 
 RUN update-ipsets -s
