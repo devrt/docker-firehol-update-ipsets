@@ -1,5 +1,7 @@
 Docker image to download and update most recent FireHOL IP list
 
+[![](https://images.microbadger.com/badges/image/devrt/firehol-update-ipsets.svg)](https://microbadger.com/images/devrt/firehol-update-ipsets "Get your own image badge on microbadger.com")
+
 Background
 ----------
 
