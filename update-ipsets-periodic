@@ -11,8 +11,14 @@ fi
 for i in `ipset list -n`;
 do
     ipset-apply $i
-    iptables -I INPUT -m set --match-set $i src -j DROP
-    iptables -I DOCKER-USER -m set --match-set $i src -j DROP
+    if [[ -z `iptables -L INPUT | grep "match-set $i src"` ]];
+    then
+        iptables -I INPUT -m set --match-set $i src -j DROP
+    fi
+    if [[ -z `iptables -L DOCKER-USER | grep "match-set $i src"` ]];
+    then
+        iptables -I DOCKER-USER -m set --match-set $i src -j DROP
+    fi
 done
 
 while :
