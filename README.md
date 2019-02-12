@@ -18,7 +18,7 @@ First, lets download and start a firehol-update-ipsets container.
 By entering the following command, permanent periodic update process will be created.
 
 ```
-$ docker volume create firehol-update-upsets
+$ docker volume create firehol-update-ipsets
 $ docker run --name firehol-update-ipsets -it -d --restart=always --cap-add=NET_ADMIN --net=host -v firehol-update-ipsets:/etc/firehol/ipsets devrt/firehol-update-ipsets
 ```
 
